@@ -1,0 +1,122 @@
+@startuml
+
+class User {
+    String userId 
+    String name 
+    setters()
+    getters()
+}
+class Vehicle {
+    String id 
+    String brandName
+    String modelName
+    Date mfgDate
+    String vehicleNumber
+    int kmDriven
+    int cc
+    VehicleType
+    int dailyPrice
+    int monthlyPrice
+
+    getters()
+    setters()
+}
+
+enum VehicleType {
+    Car
+    Bike
+    Premium cars
+}
+class Store {
+    String storeId 
+    String name
+    Location Location
+    List<Reservation>
+    VehicleInventoryManager vehicleInventoryManager
+}
+class Location {
+    String street
+    String city
+    String state 
+    String pincode 
+
+    setters()
+    getters()
+}
+
+class VehicleInventoryManager {
+    List<Vehicle>
+
+    setters()
+    getters()
+}
+
+class Invoice {
+    String id 
+    PaymentStatus paymentStatus
+    int Amount
+    Reservation reservation
+
+}
+
+enum PaymentStatus {
+    PAID
+    UNPAID 
+}
+
+class CarInventoryManager
+class BikeInventoryManager
+
+
+
+class RentalSystem {
+    List<User>
+    List<Store>
+    Reservation reservation 
+
+    CRUD()
+    fetchVehicle(location)
+    makeReservation(store, vehicle, fromDate, toDate)
+    
+}
+
+class Reservation {
+    Vehicle vehicle
+    User user
+    ReservationStatus reservationStatus
+    Date bookingDate
+    Date bookedFromTimestamp
+    Date bookedTillTimestamp
+
+
+    makeReservation(user, store, vehicle, fromDate, toDate)
+}
+
+enum ReservationStatus {
+    SCHEDULED
+    IN-PROGRESS
+    COMPLETED
+    CANCELLED
+}
+
+RentalSystem .> User : has
+Reservation ..> User : has
+Store <. RentalSystem : has
+Store --> Location
+Store --> VehicleInventoryManager
+Reservation <-- RentalSystem
+
+Reservation -> ReservationStatus
+Vehicle -> VehicleType
+
+Reservation <-- Store
+VehicleInventoryManager --> Vehicle
+
+VehicleInventoryManager --> CarInventoryManager
+VehicleInventoryManager --> BikeInventoryManager
+
+Invoice .> Reservation : has
+PaymentStatus <. Invoice : has
+
+
+@enduml 
