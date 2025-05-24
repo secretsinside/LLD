@@ -1,0 +1,124 @@
+@startuml 
+
+class Movie {
+    String id 
+    String title
+    RatingType ratingType
+    Language language
+}
+
+enum RatingType {
+    UA 
+    A
+}
+
+class Theatre {
+    Location location
+    String mapLink
+    List<Screen> screenList
+    List<Show> shows
+
+    + findShows(movie)
+}
+
+enum City {
+    Bangalore
+    Pune 
+    Mumbai
+}
+
+class Screen {
+    String id 
+    int Seats
+}
+
+class Show {
+    Movie movie 
+    int startTime
+    int endTime
+    String screenId 
+    List<Seat> bookedSeats
+}
+
+class MovieController {
+    Map<City, List<Movies>> moviesMap
+
+    + getListOfMovies(city)
+}
+
+class TheatreController {
+    Map<City, List<Theatre>> theatreMap
+
+    findTheatre(city)
+    findTheatre(movie)
+}
+
+class Seat {
+    String id 
+    int row 
+    int seatNum 
+    SeatType seatType 
+}
+
+enum SeatType {
+    Gold 
+    Platinum 
+    Diamond
+}
+
+class BookMyShow {
+    City city
+    MovieController movieController
+    TheatreController theatreController 
+    Reservation reservation 
+
+    + BookMyShow(city)
+    + findMovie(city)
+    + findTheatre(city)
+    + findTheatre(movie)
+    + bookSeats(List<Seat>)
+}
+
+class Reservation {
+    City city
+    Theatre theatre 
+    Show show
+    Payment payment  
+    List<Seat> reservedSeats
+
+    + reserveSeats(List<Seat>)
+    + proceedToPayment()
+}
+
+class Payment {
+    String txId 
+    String price 
+    String bookingTimestamp
+    PaymentStatus paymentStatus
+
+    + makePayment(txnDetails)
+}
+
+enum PaymentStatus {
+    PAID 
+    UNPAID
+}
+
+
+
+BookMyShow ..> MovieController
+BookMyShow ..> TheatreController
+BookMyShow .> Reservation
+Reservation ..> Payment
+MovieController ..> Movie
+MovieController .> City
+TheatreController ..> Theatre
+Seat .> SeatType
+Show ..> Seat
+Theatre .> Screen
+Show <. Theatre
+Movie <. Show
+RatingType <. Movie
+Payment .> PaymentStatus
+
+@enduml 
